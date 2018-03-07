@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-#####################################################
-## lecture de sondes de temperature 1-wire DS18B20 ##
-##                                                 ##
-## lancement : sudo python ...                     ##
-#####################################################
+##########################################################
+## lecture de sondes de temperature 1-wire DS18B20      ##
+## pilotage des relais pour mise en route resistance    ##
+## pilotage du ventialteur pour adapter sa vitesse      ##
+##                                                      ##
+##########################################################
  
 import sys
 import datetime
