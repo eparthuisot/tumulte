@@ -69,6 +69,8 @@ def fan_speed(ValueFs):
         GPIO.output(int(GpioPin), GPIO.LOW)
         #print (ValuePin,GpioPin)
       CountGpio=CountGpio+1
+  if ValueFs == '00':
+    heating_turn_on(str(0))
   global Last_Speed_Fan_Value
   Last_Speed_Fan_Value=str(ValueFs)
 
@@ -146,6 +148,8 @@ def lanceprog():
         print ("sonde",i,"=",sonde_value[i]) # affichage a l'ecran
     
     FanSpeed = input ("Vitesse souhaitée:")
+    if FanSpeed == '0':
+      FanSpeed ='00'
     ValueExistF = FanSpeed in dict_fan_speed
     if ValueExistF:
       FanSpeedC = fan_speed (FanSpeed)
@@ -160,20 +164,22 @@ def lanceprog():
     else:
       print("Value speed false")
     
-    HeatingValue = input ("Valeur nombre résistance:")
-    ValueExistH = HeatingValue in dict_heating_value
-    if ValueExistH:
-      HeatingValueC = heating_turn_on (HeatingValue)
-      json_body = [
-        {"measurement": "heating_value",
-        "tags": {"host": "rasp01.tumulte"},
-        "fields": {"value": HeatingValue}
-        }]
-      client = InfluxDBClient('localhost', 8086, 'root' , 'root' , 'datasensor_tumulte')
-      client.write_points(json_body)
-      client.close()
-    else:
-      print("Value heating false")
+    if FanSpeed != '00':
+      HeatingValue = input ("Valeur nombre résistance:")
+      ValueExistH = HeatingValue in dict_heating_value
+      if ValueExistH:
+        HeatingValueC = heating_turn_on (HeatingValue)
+        json_body = [
+                    {"measurement": "heating_value",
+                    "tags": {"host": "rasp01.tumulte"},
+                    "fields": {"value": HeatingValue}
+                    }
+                    ]
+        client = InfluxDBClient('localhost', 8086, 'root' , 'root' , 'datasensor_tumulte')
+        client.write_points(json_body)
+        client.close()
+      else:
+        print("Value heating false")
 
 def exitprog():
     sys.exit(0)
